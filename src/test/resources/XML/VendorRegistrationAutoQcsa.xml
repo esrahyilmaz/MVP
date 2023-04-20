@@ -1,0 +1,393 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<soapenv:Envelope xmlns:cpp="http://contractor.cpscreen.com/CSServices/CPPassService" xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+                    
+    
+    
+    
+    
+    <soapenv:Header/>   
+    <soapenv:Body>
+                                        
+        
+        
+        
+        
+        <cpp:ContractorAccountSetupRequest>
+                                                            
+            
+            
+            
+            
+            <UserId>Autoqcs</UserId>
+                                                            
+            
+            
+            
+            
+            <Password>Autoqcs</Password>
+                                                            
+            
+            
+            
+            
+            <AccountSetupRequest>
+                                                                                
+                
+                
+                
+                
+                <CompanyName>AutoqcsaVendor</CompanyName>
+                                                                                
+                
+                
+                
+                
+                <CompanyDesc/>
+                                                                                
+                
+                
+                
+                
+                <ClientCompanyId/>
+                                                                                
+                
+                
+                
+                
+                <LocationAddress>
+                                                                                                    
+                    
+                    
+                    
+                    
+                    <AddressId/>
+                                                                                                    
+                    
+                    
+                    
+                    
+                    <Address1>100 Carillon</Address1>
+                                                                                                    
+                    
+                    
+                    
+                    
+                    <Address2>Parkay</Address2>
+                                                                                                    
+                    
+                    
+                    
+                    
+                    <City>Saint Petersburg</City>
+                                                                                                    
+                    
+                    
+                    
+                    
+                    <State>FL</State>
+                                                                                                    
+                    
+                    
+                    
+                    
+                    <Zipcode>33716</Zipcode>
+                                                                                                    
+                    
+                    
+                    
+                    
+                    <County>Pinellas</County>
+                                                                                                    
+                    
+                    
+                    
+                    
+                    <Country>US</Country>
+                                                                                                    
+                
+                
+                
+                
+                </LocationAddress>
+                                                                                
+                
+               
+              
+                                                
+                
+                
+                
+                
+                <User>
+                                                                                                    
+                    
+                    
+                    
+                    
+                    <UserId/>
+                                                                                                    
+                    
+                    
+                    
+                    
+                    <CompanyId/>
+                                                                                                    
+                    
+                    
+                    
+                    
+                    <ConsortiumId/>
+                                                                                                    
+                    
+                    
+                    
+                    
+                    <LastName>nullIKSBRAIJ</LastName>
+                                                                                                    
+                    
+                    
+                    
+                    
+                    <FirstName>nullWNLBJBBU</FirstName>
+                                                                                                    
+                    
+                    
+                    
+                    
+                    <UserName>AutoqcsTestVendor1</UserName>
+                                                                                                    
+                    
+                    
+                    
+                    
+                    <Password>Password@123</Password>
+                                                                                                    
+                    
+                    
+                    
+                    
+                    <Phone>4048504384</Phone>
+                                                                                                    
+                    
+                    
+                    
+                    
+                    <EmailAddress>monika.marovic@fadv.com</EmailAddress>
+                                                                                                    
+                    
+                    
+                    
+                    
+                    <EmailReport>true</EmailReport>
+                                                                                                    
+                    
+                    
+                    
+                    
+                    <SmsReport>false</SmsReport>
+                                                                                                    
+                    
+                    
+                    
+                    
+                    <Status>true</Status>
+                                                                                                    
+                
+                
+                
+                
+                </User>
+                                                                                
+                  
+                
+                <MainContact>
+                                                                                                    
+                    
+                    
+                    
+                    
+                    <ContactId/>
+                                                                                                    
+                    
+                    
+                    
+                    
+                    <LastName>nullSDKBBGBB</LastName>
+                                                                                                    
+                    
+                    
+                    
+                    
+                    <MiddleName>R</MiddleName>
+                                                                                                    
+                    
+                    
+                    
+                    
+                    <FirstName>nullIKBBPFJW</FirstName>
+                                                                                                    
+                    
+                    
+                    
+                    
+                    <Phone>1231234678</Phone>
+                                                                                                    
+                    
+                    
+                    
+                    
+                    <Extension>1234</Extension>
+                                                                                                    
+                    
+                    
+                    
+                    
+                    <Email>monika.marovic@fadv.com</Email>
+                                                                                                    
+                
+                
+                
+                
+                </MainContact>
+                                                
+                
+                
+                <BillingContact>
+                                                                                                    
+                    
+                    
+                    
+                    
+                    <ContactId/>
+                                                                                                    
+                    
+                    
+                    
+                    
+                    <LastName>Test</LastName>
+                                                                                                    
+                    
+                    
+                    
+                    
+                    <MiddleName>V</MiddleName>
+                                                                                                    
+                    
+                    
+                    
+                    
+                    <FirstName>Vendor</FirstName>
+                                                                                                    
+                    
+                    
+                    
+                    
+                    <Suffix>II</Suffix>
+                                                                                                    
+                    
+                    
+                    
+                    
+                    <Phone>4048504123</Phone>
+                                                                                                    
+                    
+                    
+                    
+                    
+                    <Extension>4567</Extension>
+                                                                                                    
+                    
+                    
+                    
+                    
+                    <Email>test@fadv.com</Email>
+                                                                                                    
+                
+                
+                
+                
+                </BillingContact>
+                                                                                
+                
+                
+                
+                
+                <BillingAddress>
+                                                                                                    
+                    
+                    
+                    
+                    
+                    <AddressId/>
+                                                                                                    
+                    
+                    
+                    
+                    
+                    <Address1>1000 Alderman</Address1>
+                                                                                                    
+                    
+                    
+                    
+                    
+                    <Address2>Drive</Address2>
+                                                                                                    
+                    
+                    
+                    
+                    
+                    <City>Alpharettasville</City>
+                                                                                                    
+                    
+                    
+                    
+                    
+                    <State>GA</State>
+                                                                                                    
+                    
+                    
+                    
+                    
+                    <Zipcode>30005</Zipcode>
+                                                                                                    
+                    
+                    
+                    
+                    
+                    <County>Fulton</County>
+                                                                                                    
+                    
+                    
+                    
+                    
+                    <Country>US</Country>
+                                                                                                    
+                
+                
+                
+                
+                </BillingAddress>
+                                                                                
+            
+            
+            
+            
+            </AccountSetupRequest>
+                                                            
+        
+        
+        
+        
+        </cpp:ContractorAccountSetupRequest>
+                                        
+    
+    
+    
+    
+    </soapenv:Body>
+                    
+
+
+
+
+</soapenv:Envelope>
