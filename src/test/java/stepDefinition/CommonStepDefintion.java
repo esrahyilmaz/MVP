@@ -413,7 +413,6 @@ public class CommonStepDefintion extends BaseClass {
     }
 
     /**
-     * @param action want to perform
      * @author shekarcg
      * @category windows movement in script
      */
