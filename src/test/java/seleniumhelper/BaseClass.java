@@ -7,6 +7,8 @@ import Utility.ReportUpload;
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
 import com.aventstack.extentreports.Status;
+import helpers.EventListener;
+import helpers.PropertyHelper;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import io.github.sridharbandi.HtmlCsRunner;
 import org.apache.commons.io.FileUtils;
@@ -18,6 +20,7 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.events.EventFiringWebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -252,6 +255,9 @@ public class BaseClass extends CurrentDateTime {
 	ChromeOptions options = new ChromeOptions();
 	JavascriptExecutor javaScriptExecutor=(JavascriptExecutor) driver;
 
+	public static EventFiringWebDriver eventFiringWebDriver;
+	public static EventListener eventListener;
+
 	static {
 		SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy-hh-mm-ss");
 		System.setProperty("current.date.time", dateFormat.format(new Date()));
@@ -266,6 +272,21 @@ public class BaseClass extends CurrentDateTime {
 
 
 		}
+	}
+
+	public static EventFiringWebDriver setEventDriver() {
+		eventFiringWebDriver = new EventFiringWebDriver(driver);
+		setEventListener(eventFiringWebDriver);
+		return eventFiringWebDriver;
+	}
+
+
+	public static void setEventListener(EventFiringWebDriver eventFiringWebDriver) {
+		// Create an instance of your event listener class
+		eventListener = new EventListener();
+
+		// Register the event listener
+		eventFiringWebDriver.register(eventListener);
 	}
 
 	/********* report information *********************************/
