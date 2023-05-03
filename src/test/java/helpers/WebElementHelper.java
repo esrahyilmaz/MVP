@@ -6,6 +6,7 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.events.EventFiringWebDriver;
+import seleniumhelper.BaseClass;
 
 import java.io.File;
 import java.io.FileReader;
@@ -20,7 +21,7 @@ import java.util.regex.Pattern;
 
 import static org.testng.Assert.fail;
 
-public class WebElementHelper extends DriverHelper {
+public class WebElementHelper extends BaseClass {
     // Declare Objects
 
     public static final Logger log = Logger.getLogger(WebElementHelper.class.getName());
@@ -115,13 +116,13 @@ public class WebElementHelper extends DriverHelper {
      */
     public static void writeMap() throws IOException {
         if (!recordMode) {
-            log.debug("Not in Record Mode for method: {}" + Thread.currentThread().getStackTrace()[1].getMethodName());
+            reportInfo("Not in Record Mode for method: {}" + Thread.currentThread().getStackTrace()[1].getMethodName());
             return;
         }
         File pageDir = new File(outputFilePath + "\\" + pageFolder);
         if (!pageDir.exists()) {
             if (!pageDir.mkdirs()) {
-                ReportHelper.customLogError("Unable to create " + pageFolder + " directory");
+                reportInfo("Unable to create " + pageFolder + " directory");
             }
         }
         Gson gson = new GsonBuilder().disableHtmlEscaping().setPrettyPrinting().create();
@@ -133,7 +134,7 @@ public class WebElementHelper extends DriverHelper {
             writer.write(json.get());
             writer.close();
             log.debug("File written: {}" + file.get().getAbsolutePath());
-            ReportHelper.customLogInfo("Mapping saved in " + getPage() + "<br>" + json.get());
+            reportInfo("Mapping saved in " + getPage() + "<br>" + json.get());
         } catch (IOException e) {
             log.error("Error writing to file: {}" + file.get().getAbsolutePath(), e);
             throw e;

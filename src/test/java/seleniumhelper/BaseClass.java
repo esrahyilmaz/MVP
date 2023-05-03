@@ -8,7 +8,7 @@ import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
 import com.aventstack.extentreports.Status;
 import helpers.EventListener;
-import helpers.PropertyHelper;
+import helpers.ReportHelper;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import io.github.sridharbandi.HtmlCsRunner;
 import org.apache.commons.io.FileUtils;
@@ -37,6 +37,7 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import static com.aventstack.extentreports.Status.*;
+import static org.testng.Assert.fail;
 
 //************************ MINDTREE QA AUTOMATION TEAM **************************************//
 
@@ -318,14 +319,14 @@ public class BaseClass extends CurrentDateTime {
 		}
 	}
 
-	public void reportInfo(String message) {
+	public static void reportInfo(String message) {
 		System.out.println(message);
 		Reporter.log(message);
 
 	}
 
 	/******* report fail ********************************************/
-	public void reportFail(String message) {
+	public static void reportFail(String message) {
 		System.out.println("Fail:" + message);
 		Reporter.log("Fail: " + message);
 	}
@@ -397,36 +398,38 @@ public class BaseClass extends CurrentDateTime {
 		try {
 			ReportUtils.createScenario(scenarioName);
 			switch (_browser) {
-			case "Chrome":
-				WebDriverManager.chromedriver().setup();
-				ChromeOptions options = new ChromeOptions();
-    //    		options.setHeadless(true);
+				case "Chrome":
+					WebDriverManager.chromedriver().setup();
+					ChromeOptions options = new ChromeOptions();
+					//    		options.setHeadless(true);
 //				System.setProperty("webdriver.chrome.driver",
 //						System.getProperty("user.dir") + PropertyFileReader.getProperty("chromeDriver.path"));
-				driver = new ChromeDriver(options);
+					driver = new ChromeDriver(options);
 //				driver = new ChromeDriver();
-				driver.manage().window().setSize(new Dimension(1600,900));
-				driver.manage().window().fullscreen();
-			//For accessibility testing
-				htmlCsRunner = new HtmlCsRunner(driver);
-				logStepInfo("Chrome Browser Opened Successfully - " + _browser);
-				reportLog(PASS, "Chrome Browser Opened Successfully - " + _browser, false);
-				break;
-			case "Firefox":
-				System.setProperty("webdriver.gecko.driver",
-						System.getProperty("user.dir") + PropertyFileReader.getProperty("firefoxDriver.path"));
-				driver = new FirefoxDriver();
-				driver.manage().window().maximize();
-				logStepInfo("Firefox Browser Opened Successfully - " + _browser);
-				reportLog(PASS, "Firefox Browser Opened Successfully - " + _browser, false);
-				break;
-			case "Internet Explorer":
-				System.setProperty("webdriver.ie.driver",
-						System.getProperty("user.dir") + PropertyFileReader.getProperty("IEDriver.path"));
-				driver = new InternetExplorerDriver();
-				driver.manage().window().maximize();
-				logStepInfo("Internet Explorer Browser Opened Successfully - " + _browser);
-				reportLog(PASS, "Internet Explorer Browser Opened Successfully - " + _browser, false);
+					driver = setEventDriver();
+//				eventFiringWebDriver.manage().window().setSize(new Dimension(1600,900));
+//				eventFiringWebDriver.manage().window().fullscreen();
+					//For accessibility testing
+					htmlCsRunner = new HtmlCsRunner(driver);
+					logStepInfo("Chrome Browser Opened Successfully - " + _browser);
+					reportLog(PASS, "Chrome Browser Opened Successfully - " + _browser, false);
+					break;
+				case "Firefox":
+					System.setProperty("webdriver.gecko.driver",
+							System.getProperty("user.dir") + PropertyFileReader.getProperty("firefoxDriver.path"));
+					driver = new FirefoxDriver();
+					setEventDriver();
+					eventFiringWebDriver.manage().window().maximize();
+					logStepInfo("Firefox Browser Opened Successfully - " + _browser);
+					reportLog(PASS, "Firefox Browser Opened Successfully - " + _browser, false);
+					break;
+				case "Internet Explorer":
+					System.setProperty("webdriver.ie.driver",
+							System.getProperty("user.dir") + PropertyFileReader.getProperty("IEDriver.path"));
+					driver = new InternetExplorerDriver();
+					driver.manage().window().maximize();
+					logStepInfo("Internet Explorer Browser Opened Successfully - " + _browser);
+					reportLog(PASS, "Internet Explorer Browser Opened Successfully - " + _browser, false);
 				break;
 			default:
 				logStepInfo("Incorrect browser info provided. - " + _browser
@@ -1471,13 +1474,133 @@ public class BaseClass extends CurrentDateTime {
 			reportLog(INFO,message+"NOT CLICKED",true);
 		}
 	}
-	public void executeJSScript(String script,String message){
+
+	public void executeJSScript(String script, String message) {
 		try {
-		javaScriptExecutor.executeScript(script);
-		reportLog(PASS,"Script executed"+message,false);
-		}catch (Exception e){
+			javaScriptExecutor.executeScript(script);
+			reportLog(PASS, "Script executed" + message, false);
+		} catch (Exception e) {
 			e.printStackTrace();
-			reportLog(INFO, "Script failes to execute"+message, true);
+			reportLog(INFO, "Script failes to execute" + message, true);
 		}
+	}
+
+//	/**
+//	 * Waiting, should be restricted to use
+//	 *
+//	 * @param seconds
+//	 */
+//	public static void wait(int seconds) {
+//		try {
+//			Thread.sleep(seconds * 1000);
+//			reportInfo("Waited for " + seconds + " seconds");
+//
+//		} catch (Exception e) {
+//			log.warn("Failed - Error in function wait(): " + e.getMessage());
+//		}
+//	}
+
+	public static void loadUrl(WebDriver driver, String url) {
+		try {
+			driver.get(url);
+			reportInfo("Open URL: " + url);
+			ReportHelper.customLogSuccess("Open URL: " + url);
+		} catch (Exception e) {
+			reportFail("Unable to open URL:" + url + " by error: " + e);
+			fail();
+		}
+
+	}
+
+	public boolean isExistElement(WebDriver driver, By by, int sec) {
+		boolean exist = false;
+
+		for (int i = 0; i < sec; i++) {
+			try {
+				WebElement element = driver.findElement(by);
+				if (element != null) {
+					exist = true;
+					reportInfo("Element " + by + " exists");
+					break;
+				} else {
+					reportInfo("Element " + by + " not exists");
+					wait(1);
+				}
+			} catch (Exception e) {
+				reportInfo("Element: " + by + " not found");
+				wait(1);
+			}
+		}
+		return exist;
+	}
+
+	public boolean isExistElement(WebDriver driver, By by) {
+		return isExistElement(driver, by, 1);
+	}
+
+	public boolean isDisplayed(WebDriver driver, By by, int sec) {
+		boolean displayed = false;
+		for (int i = 0; i < sec; i++) {
+			try {
+				WebElement element = driver.findElement(by);
+				if (element != null && element.isDisplayed()) {
+					displayed = true;
+					reportInfo("Element: " + by + " displayed");
+					break;
+				} else {
+					reportInfo("Element: " + by + " not displayed");
+					wait(1);
+				}
+			} catch (Exception e) {
+				reportFail("Element: " + by + " not found");
+				wait(1);
+			}
+		}
+		return displayed;
+	}
+
+	public boolean isDisplayed(WebDriver driver, By by) {
+		return isDisplayed(driver, by, 1);
+	}
+
+	public static void clickOnElement(WebDriver driver, By by) {
+		try {
+			driver.findElement(by).click();
+			reportInfo("Click on element: " + by);
+			ReportHelper.customLogSuccess("Click on element: " + by);
+		} catch (Exception e) {
+			reportFail("Unable click on element: " + by + " cause of error: " + e);
+			fail();
+		}
+	}
+
+	public static void enterTextToElement(WebDriver driver, By by, String text) {
+		try {
+			WebElement ele = driver.findElement(by);
+			ele.clear();
+			ele.sendKeys(text);
+			reportInfo("Enter text: " + text + " to element: " + by);
+			ReportHelper.customLogSuccess("Enter text: " + text + " to element: " + by);
+		} catch (Exception e) {
+			reportFail("Unable to enter text to element:" + by + " cause of error: " + e);
+			fail();
+		}
+	}
+
+	public static void takeScreenshot(WebDriver driver) {
+		try {
+			TakesScreenshot ts = (TakesScreenshot) driver;
+			byte[] screenshot = ts.getScreenshotAs(OutputType.BYTES);
+			ReportHelper.getScenario().attach(screenshot, "image/png", "Screenshot");
+			reportInfo("Screenshot attached to report ");
+		} catch (Exception e) {
+			reportFail("Unable to attach screenshot: " + e);
+		}
+	}
+
+	public static void setAttribute(WebDriver driver, By by, String attrName, String attrValue) {
+		JavascriptExecutor js = (JavascriptExecutor) driver;
+		WebElement ele = driver.findElement(by);
+		js.executeScript("arguments[0].setAttribute('" + attrName + "', '" + attrValue + "')", ele);
 	}
 }

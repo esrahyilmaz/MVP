@@ -4,6 +4,7 @@ import Report.ReportWriter;
 import Utility.*;
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.Status;
+import helpers.WebElementHelper;
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
@@ -222,6 +223,7 @@ public class CommonStepDefintion extends BaseClass {
                 + ".html";
         System.out.println("Report Location is ::" + reportPath);
         System.out.println("Report Server Location is ::" + ReportpathServer);
+        WebElementHelper.setRecordMode();
     }
 
     @After
@@ -231,6 +233,7 @@ public class CommonStepDefintion extends BaseClass {
         System.out.println("Write into Execution Result....");
         //For accessibility testing
 
+        WebElementHelper.writeMap();
         htmlCsRunner.generateHtmlReport();
     }
 
@@ -7795,6 +7798,125 @@ public class CommonStepDefintion extends BaseClass {
 
     }
 
+    @Given("Set Page")
+    public void setPage(DataTable dataTable) {
+        WebElementHelper.setPage(dataTable.values().get(0));
+        if (!WebElementHelper.getRecordMode()) {
+            WebElementHelper.retrieveExistingMapFromFile();
+        }
+    }
+
+    @And("Open url")
+    public void openUrl(DataTable dataTable) {
+        String url;
+        String applicationName = dataTable.values().get(0);
+
+        if (applicationName.equalsIgnoreCase("Autoqcs"))
+            url = "https://qcsa.fadv.net/login?s=autoqcs";
+
+        else if (applicationName.equalsIgnoreCase("NewUI Vendor Registration"))
+            url = "https://qcsa.fadv.net/login?s=autoqcs";
+        else if (applicationName.equalsIgnoreCase("DrugTest"))
+            url = "https://ua.ca.fadv.com/login?s=usecasefour";
+
+        else if (applicationName.equalsIgnoreCase("NewUI Vendor Registration-without Fee"))
+            url = "https://qcsa.fadv.net/login?s=autoqcs";
+        else if (applicationName.equalsIgnoreCase("NewUI Vendor Registration-with Fee"))
+            url = "https://qcsa.fadv.net/login?s=qcsavc";
+
+        else if (applicationName.equalsIgnoreCase("NewUI API Vendor Registration"))
+            url = "https://qcsa.fadv.net/?onboarding=9c7bcbeabe5145d3b3846bad49688044";
+        else if (applicationName.equalsIgnoreCase("NewUI Vendor Registration - Sing Up"))
+            url = "https://qcsa.fadv.net/login?s=autoqcs";
+        else if (applicationName.equalsIgnoreCase("SelfScreeningWorkflow"))
+            url = "https://qcsa.fadv.net/login?s=autoqcs";
+        else if (applicationName.equalsIgnoreCase("Vendor On boarding NewUI Prod Sanity"))
+            url = "https://qcsa.fadv.net/login?s=amazonafp";
+//			url = "https://ca.fadv.com/login?s=TESTXTDFORCE";
+        else if (applicationName.equalsIgnoreCase("Vendor Reg"))
+            url = _dataRepo.getData("OtherURL");
+        else if (applicationName.equalsIgnoreCase("EA"))
+            url = "https://enterprise.fadv.com";
+        else if (applicationName.equalsIgnoreCase("Agreement Page"))
+            url = AgreementfilePath;
+        else if (applicationName.equalsIgnoreCase("Emaillog page"))
+            url = EmaillogfilePath;
+        else if (applicationName.equalsIgnoreCase("PALanuchUrl"))
+            url = PAInviteLink;
+        else if (applicationName.equalsIgnoreCase("AutoQcsaVendorApi"))
+            url = VendorApiURL;
+
+        else if (applicationName.equalsIgnoreCase("PAInviteLanuchUrl"))
+            url = "https://pa-intl-qa.fadv.net/#/invite/?key=" + profileId;
+        else if (applicationName.equalsIgnoreCase("PAInviteLanuchUrlUAT"))
+            url = "https://pa-ua.fadv.com/#/invite/?key=" + profileId;
+        else if (applicationName.equalsIgnoreCase("PAInviteLanuchUrlPROD"))
+            url = "https://pa.fadv.com/#/invite/?key=" + profileId;
+        else if (applicationName.equalsIgnoreCase("PAInviteLanuchUrlCT"))
+            url = "https://pa-test.fadv.com/#/invite/?key=" + profileId;
+
+        else if (applicationName.equalsIgnoreCase("UAT"))
+            url = "https://ua.ca.fadv.com/login?s=AYFTest";
+            //url = "https://ua.ca.fadv.com/login?s=amazonafp";
+        else if (applicationName.equalsIgnoreCase("Outlook"))
+            url = "https://outlook.live.com/owa/?nlp=1";
+        else if (applicationName.equalsIgnoreCase("NewUI0"))
+            url = "https://qcsa.fadv.net/login?s=amazonafp";
+        else if (applicationName.equalsIgnoreCase("Admin tool-QCSA"))
+            url = "https://qcsa-admin.fadv.net";
+        else if (applicationName.equalsIgnoreCase("Admin tool-QCSB"))
+            url = "https://qcsb-admin.fadv.net";
+        else if (applicationName.equalsIgnoreCase("Admin tool-UAT"))
+            url = "https://uaxtdforce-admin.fadv.net";
+        else if (applicationName.equalsIgnoreCase("Admin tool"))
+            url = _dataRepo.getData("other.url");
+        else if (applicationName.equalsIgnoreCase("Mailinator"))
+            url = "https://www.mailinator.com/";
+        else
+            url = _dataRepo.getData("page.url");
+
+        URL = url;
+        System.out.println("URL::" + url);
+        eventFiringWebDriver.manage().deleteAllCookies();
+
+//		loadUrl(url);
+        wait(2);
+        loadUrl(eventFiringWebDriver, url);
+        if (url.contains("?hd")) {
+            CustID = "1296";
+        } else if (url.contains("?unigroup")) {
+            CustID = "215";
+        } else if (url.contains("?clickstaff")) {
+            CustID = "1346";
+        } else if (url.contains("?lockheed")) {
+            CustID = "14";
+        } else if (url.contains("?aspengrove")) {
+            CustID = "1281";
+        } else if (url.contains("?allpro1")) {
+            CustID = "13";
+        } else if (url.contains("amazonafp")) {
+            CustID = "2935";
+        } else {
+            CustID = "1296";
+        }
+
+        if (url.contains("qcsa")) {
+            DB = "QCSA";
+        } else if (url.contains("qcsb")) {
+            DB = "QCSB";
+        } else if (url.contains("https://ca.fadv.com")) {
+            DB = "PROD";
+        } else if (url.contains("https://test.ca.fadv.com")) {
+            DB = "CT";
+        } else if (url.contains("https://ua.ca.fadv.com/")) {
+            DB = "UAT";
+        }
+
+        if (applicationName.contains("NewUI")) {
+            CustomerName = driver.getTitle();
+            System.out.println("cust name::" + CustomerName);
+        }
+    }
 }
 
 
